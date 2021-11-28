@@ -28,3 +28,11 @@ def solution(s):
         "y": "101111",
         "z": "101011",
     }
+
+    result = ""
+    for c in s:
+        if str.isupper(c):
+            result+="000001"
+            c = str.lower(c)
+        result+=alphabetToBraille[c]
+    return result
