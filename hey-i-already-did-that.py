@@ -1,14 +1,16 @@
 def solution(n, b):
-    z = n
-    cycle = 0
+    z = str(n)
+    
     nDigits = []
-    for i in str(z):
+    for i in z:
         nDigits.append(int(i))
     k = len(nDigits)
+    outputHistory = []
 
-    while str(n) != z or cycle < 1:
+    cycleLength = 0
+    while cycleLength < 1:
         digits = []
-        for i in str(z):
+        for i in z:
             digits.append(int(i))
 
         digitsAsc = sorted(digits)
@@ -17,19 +19,36 @@ def solution(n, b):
         x = ""
         for i in digitsDes:
             x += str(i)
-        x = int(x)
+        x = int(x, b)
 
         y = ""
         for i in digitsAsc:
             y += str(i)
-        y = int(y)
+        y = int(y, b)
 
-        z = x - y
-        z = str(z)
+        baseList = numToBase(x - y, b)
+
+        z = ""
+        for i in baseList:
+            z += str(i)
+        
         while len(z) < k:
             z = "0" + z
-        print(z, str(n))
-        cycle += 1
-    print(cycle)
 
-solution(1211, 10)
+        if z in outputHistory:
+            cycleList = outputHistory[outputHistory.index(z):]
+            cycleLength = len(cycleList)
+        else:
+            outputHistory.append(z)
+
+    return cycleLength
+
+def numToBase(n, b):
+    if n == 0:
+        return [0]
+    digits = []
+    while n:
+        digits.append(int(n % b))
+        n //= b
+
+    return sorted(digits, reverse = True)
